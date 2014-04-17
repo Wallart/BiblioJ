@@ -10,14 +10,16 @@ class Livre {
 
     static hasMany = [auteur:Auteur, reservation:Reservation]
     static belongsTo = [Auteur, Reservation]
-    static searchable = true
+    static searchable = {
+        components: true
+    }
 
     static constraints = {
     }
 
-    def searchableService
+    //def searchableService
 
-    def index = {
+    /*def index = {
         if (!params.q?.trim()) {
             return [:]
         }
@@ -26,5 +28,5 @@ class Livre {
         } catch (SearchEngineQueryParseException ex) {
             return [parseException: true]
         }
-    }
+    }*/
 }

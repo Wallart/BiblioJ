@@ -6,6 +6,32 @@ class LivreController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
+    def searchableService
+
+    /*def index = {
+        if (!params.q?.trim()) {
+            return [:]
+        }
+        try {
+            return [searchResult: searchableService.search(params.q, params)]
+        } catch (SearchEngineQueryParseException ex) {
+            return [parseException: true]
+        }
+    }*/
+
+    def search() {
+        def query = params.query
+        if(query){
+            def results = searchableService.search(query)
+            println results
+            println results.results[0].titre
+            render(view: "list", model: [livreInstanceList: results.results, livreInstanceTotal: results.total])
+        }
+        else{
+            redirect(action: "list")
+        }
+    }
+
     def index() {
         redirect(action: "list", params: params)
     }

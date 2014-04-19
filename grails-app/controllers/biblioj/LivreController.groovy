@@ -11,7 +11,8 @@ class LivreController {
     }
 
     def list(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
+        println("List: ${params}")
+        params.max = Math.min(max ?: 5, 100)
         [livreInstanceList: Livre.list(params), livreInstanceTotal: Livre.count()]
     }
 
@@ -98,5 +99,29 @@ class LivreController {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'livre.label', default: 'Livre'), id])
             redirect(action: "show", id: id)
         }
+    }
+
+    def addToPanier() {
+        def panier = Panier.findByIdSession(session.getId())
+        if (!panier) {
+            println ("Allocation!")
+            panier = new Panier(idSession: session.getId()).save()
+        }
+        def livre = Livre.findByTitre(params.get("nomlivre"))
+        panier.addToLivre(livre)
+        println (session.getId() + " : " + panier.livre)
+        redirect(action: "list")
+    }
+
+    def removeFromPanier() {
+        def panier = Panier.findByIdSession(session.getId())
+        if (!panier) {
+            println ("Allocation!")
+            panier = new Panier(idSession: session.getId()).save()
+        }
+        def livre = Livre.findByTitre(params.get("nomlivre"))
+        panier.removeFromLivre(livre)
+        println (session.getId() + " : " + panier.livre)
+        redirect(action: "list")
     }
 }

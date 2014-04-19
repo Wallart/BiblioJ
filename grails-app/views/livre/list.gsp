@@ -1,5 +1,5 @@
 
-<%@ page import="biblioj.Livre" %>
+<%@ page import="biblioj.Panier; biblioj.Livre" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -29,7 +29,7 @@
 						<g:sortableColumn property="nombreExemplairesDisponibles" title="${message(code: 'livre.nombreExemplairesDisponibles.label', default: 'Nombre Exemplaires Disponibles')}" />
 					
 						<g:sortableColumn property="titre" title="${message(code: 'livre.titre.label', default: 'Titre')}" />
-					
+
 						<th><g:message code="livre.type.label" default="Type" /></th>
 					
 					</tr>
@@ -45,6 +45,26 @@
 						<td>${fieldValue(bean: livreInstance, field: "titre")}</td>
 					
 						<td>${fieldValue(bean: livreInstance, field: "type")}</td>
+
+                        <td>
+                            <%
+                                if (!Panier.findByIdSession(session.getId())?.livre?.contains(livreInstance)) {
+                            %>
+                                <g:form action="addToPanier" method="post" >
+                                    <input type="hidden" name="nomlivre" value="${fieldValue(bean: livreInstance, field: "titre")}" />
+                                    <input type="submit" value="Ajouter Au Panier" />
+                                </g:form>
+                            <%
+                                } else {
+                            %>
+                            <g:form action="removeFromPanier" method="post" >
+                                <input type="hidden" name="nomlivre" value="${fieldValue(bean: livreInstance, field: "titre")}" />
+                                <input type="submit" value="Retirer Du Panier" />
+                            </g:form>
+                            <%
+                                }
+                            %>
+                        </td>
 					
 					</tr>
 				</g:each>

@@ -5,7 +5,7 @@ class Auteur {
     String nom
     String prenom
 
-    static hasMany = [livre:Livre]
+    static hasMany = [livres:Livre]
 
     static constraints = {
         nom nullable: true

@@ -22,10 +22,26 @@ class LivreController {
     def search() {
         def query = params.query
         if(query){
-            def results = searchableService.search(query)
+
+            def criteria = Livre.createCriteria()
+            def results = criteria {
+                ilike("titre", "%"+query+"%")
+                or {
+                    auteurs {
+                        ilike("nom", "%" + query + "%")
+                        /*or {
+                            ilike("prenom", "%"+query+"%")
+                        }*/
+                    }
+                }
+            }
+
             println results
-            println results.results[0].titre
-            render(view: "list", model: [livreInstanceList: results.results, livreInstanceTotal: results.total])
+            //def results = searchableService.search(query)
+            //params.max = 5
+
+            render(view: "list", model: [livreInstanceList: results, livreInstanceTotal: results.size()])
+            //redirect(action: "list")
         }
         else{
             redirect(action: "list")

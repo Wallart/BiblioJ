@@ -7,10 +7,11 @@ class Livre {
     Number nombreExemplairesDisponibles
     TypeDocument type
 
-    static hasMany = [auteur:Auteur, reservation:Reservation]
+    static hasMany = [auteurs:Auteur, reservations:Reservation]
     static belongsTo = [Auteur, Reservation]
     static searchable = true
 
     static constraints = {
+        type nullable: true
     }
 }

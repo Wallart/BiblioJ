@@ -20,39 +20,32 @@
 			<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
-            <g:form action="search">
-                <div class="search">
-                    Search Contacts
-                    <input type="text" name="query" value="${params.query}" />
-                    <input type="submit" value="Search" />
-                </div>
-            </g:form>
 			<table>
 				<thead>
 					<tr>
-
-                        <g:sortableColumn property="titre" title="${message(code: 'livre.titre.label', default: 'Titre')}" />
-
-                        <th>Auteur(s)</th>
-
-                        <th><g:message code="livre.type.label" default="Type" /></th>
-
-						<g:sortableColumn property="nombreExemplaires" title="${message(code: 'livre.nombreExemplaires.label', default: 'Exemplaires disponibles')}" />
-
+					
+						<g:sortableColumn property="nombreExemplaires" title="${message(code: 'livre.nombreExemplaires.label', default: 'Nombre Exemplaires')}" />
+					
+						<g:sortableColumn property="nombreExemplairesDisponibles" title="${message(code: 'livre.nombreExemplairesDisponibles.label', default: 'Nombre Exemplaires Disponibles')}" />
+					
+						<g:sortableColumn property="titre" title="${message(code: 'livre.titre.label', default: 'Titre')}" />
+					
+						<th><g:message code="livre.type.label" default="Type" /></th>
+					
 					</tr>
 				</thead>
 				<tbody>
 				<g:each in="${livreInstanceList}" status="i" var="livreInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-
-                        <td><g:link action="show" id="${livreInstance.id}">${fieldValue(bean: livreInstance, field: "titre")}</g:link></td>
-
-                        <td></td>
-
-                        <td>${fieldValue(bean: livreInstance.type, field: "intitule")}</td>
-
+					
+						<td><g:link action="show" id="${livreInstance.id}">${fieldValue(bean: livreInstance, field: "nombreExemplaires")}</g:link></td>
+					
 						<td>${fieldValue(bean: livreInstance, field: "nombreExemplairesDisponibles")}</td>
-
+					
+						<td>${fieldValue(bean: livreInstance, field: "titre")}</td>
+					
+						<td>${fieldValue(bean: livreInstance, field: "type")}</td>
+					
 					</tr>
 				</g:each>
 				</tbody>

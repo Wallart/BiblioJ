@@ -30,24 +30,25 @@ header {
     display:inline-block;
     width:60%;
     height:100%;
-    overflow:hidden;
 }
 
 #title {
-    color:white;
     margin-top:15px;
     display:inline-block;
     vertical-align:top;
     width:15%;
     font:1.8em Gill Sans, My Gill Sans, sans-serif;
     font-weight:bold;
-    border:1px solid white;
+}
+
+#title a {
+    color:white;
+    text-decoration:none;
 }
 
 #search-wrapper {
     display:inline-block;
     vertical-align:top;
-    border:1px solid white;
     width:60%;
 }
 
@@ -55,8 +56,60 @@ header {
     display:inline-block;
     vertical-align:top;
     width:15%;
-    height:70px;
-    border:1px solid white;
+    height:100%;
+    position: relative;
+}
+
+#panier-wrapper #panier-infos {
+    height:100%;
+    cursor: pointer;
+}
+
+#panier-infos #panier-img {
+    display:inline-block;
+    vertical-align:top;
+    background-image:url('../images/basket.png');
+    background-size:cover;
+    width:42px;
+    height:42px;
+    margin-top:10px;
+}
+
+#panier-infos #panier-text {
+    display:inline-block;
+    vertical-align:top;
+    color:white;
+    font-family:Helvetica;
+    margin-top:23px;
+}
+
+#panier-thumb {
+    position: absolute;
+    top:70px;
+    background-color:white;
+    width:200px;
+    height:300px;
+    display:none;
+    border:1px solid red;
+    padding-top:10px;
+}
+
+#panier-thumb ul {
+    border:1px solid red;
+    list-style-type:none;
+    padding:0;
+    margin-top:15px;
+}
+
+#panier-thumb ul li {
+    border:1px solid blue;
+    list-style-type:none;
+    text-align:left;
+    text-indent:20px;
+}
+
+#panier-wrapper:hover #panier-thumb {
+    display:block;
 }
 
 #search-wrapper #input-wrapper {

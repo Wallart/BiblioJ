@@ -12,7 +12,7 @@
         <div id="body-wrapper">
             <header>
                 <div id="header-content-wrapper">
-                    <div id="title">BiblioJ</div>
+                    <div id="title"><g:link>BiblioJ</g:link></div>
                     <div id="search-wrapper">
                         <g:form controller="livre" method="post" action="search">
                             <div id="input-wrapper">
@@ -36,11 +36,42 @@
                         </g:form>
                     </div>
                     <div id="panier-wrapper">
-                        <g:form controller="livre" method="post" action="addToReservation">
-                            <input type="hidden" name="offset" value="${params.get("offset")}"/>
-                            <input type="hidden" name="max" value="${params.get("max")}"/>
-                            <input type="submit" value="Valider réservation"/>
-                        </g:form>
+                        <div id="panier-infos">
+                            <div id="panier-img"></div>
+                            <div id="panier-text">
+                                <%
+                                    def panier = session.getAttribute("panier")
+                                    if(panier?.livre && panier.livre.size() > 0){
+                                %>
+                                    ${panier.livre.size()}
+                                <%
+                                    } else {
+                                %>
+                                        0
+                                <%
+                                    }
+                                %>
+                                élément(s)
+                            </div>
+                        </div>
+                            <%
+                                if(panier?.livre && panier.livre.size() > 0){
+                            %>
+                            <div id="panier-thumb">
+                                <g:form controller="livre" method="post" action="addToReservation">
+                                    <input type="hidden" name="offset" value="${params.get("offset")}"/>
+                                    <input type="hidden" name="max" value="${params.get("max")}"/>
+                                    <input type="submit" value="Valider réservation"/>
+                                </g:form>
+                                <ul>
+                                    <g:each in="${panier.livre}" status="i" var="livreInstance">
+                                        <li>${livreInstance.titre}</li>
+                                    </g:each>
+                                </ul>
+                            </div>
+                            <%
+                                }
+                            %>
                     </div>
                 </div>
             </header>

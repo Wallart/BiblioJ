@@ -12,7 +12,7 @@ class BootStrap {
              * On vérifie que le Type de Document n'existe pas déjà.
              * On vérifie aussi que son intitulé n'est pas vide.
              */
-            /*def doc = TypeDocument.findByIntitule(tokens[1])
+           /* def doc = TypeDocument.findByIntitule(tokens[1])
             if(doc == null && tokens[1].size() > 0){
                 doc = new TypeDocument(intitule: tokens[1]).save(failOnError: true)
             }*/
@@ -30,7 +30,7 @@ class BootStrap {
             /*
              * On vérifie que l'Auteur n'existe pas déjà.
              */
-            /*def author = Auteur.findByNomAndPrenom(nom, prenom)
+           /* def author = Auteur.findByNomAndPrenom(nom, prenom)
             if(author == null){
                 author = new Auteur(nom: nom, prenom: prenom).save(failOnError: true)
             }

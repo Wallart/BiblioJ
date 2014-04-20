@@ -17,15 +17,17 @@
                                     Panier panier = session.getAttribute("panier")
                                     if(panier?.livre && panier.livre*.titre.contains(livreInstance.titre)){
                                 %>
-                                <g:form action="removeFromPanier" method="post" params="[offset: params.get('offset'), max: params.get('max')]">
+                                <g:form controller="panier" action="removeFromPanier" method="post" params="[offset: params.get('offset'), max: params.get('max')]">
                                     <input type="hidden" name="nomlivre" value="${fieldValue(bean: livreInstance, field: "titre")}" />
+                                    <input type="hidden" name="controleur" value="livre" />
                                     <input type="submit" value="Retirer Du Panier" />
                                 </g:form>
                                 <%
                                     } else if(livreInstance.nombreExemplairesDisponibles > 0){
                                 %>
-                                <g:form action="addToPanier" method="post" params="[offset: params.get('offset'), max: params.get('max')]">
+                                <g:form controller="panier" action="addToPanier" method="post" params="[offset: params.get('offset'), max: params.get('max')]">
                                     <input type="hidden" name="nomlivre" value="${fieldValue(bean: livreInstance, field: "titre")}" />
+                                    <input type="hidden" name="controleur" value="livre" />
                                     <input type="submit" value="Ajouter Au Panier" />
                                 </g:form>
                                 <%

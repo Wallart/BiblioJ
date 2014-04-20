@@ -99,4 +99,25 @@ class ReservationController {
             redirect(action: "show", id: id)
         }
     }
+
+    def addToReservation() {
+
+        Panier panier = session.getAttribute("panier")
+        if (panier) {
+            Reservation reserv = new Reservation(code: 1,  dateReservation: new Date()).save(failOnError: true)
+            def liste = panier.livre?.asList()*.titre
+            while(!liste?.isEmpty()) {
+                def livre = Livre.findByTitre(liste.get(0))
+                def nbExemplairesDisponible = livre.getNombreExemplairesDisponibles()
+                Livre.findByTitre(liste.get(0)).setNombreExemplairesDisponibles(nbExemplairesDisponible - 1)
+                reserv.addToLivre(Livre.findByTitre(liste.get(0)))
+                liste.remove(0);
+            }
+            panier.livre?.clear()
+        } else {
+            // Rien faire car il n'ya rien dans le panier
+        }
+        // Rediriger vers la vue reservation
+        redirect(controller: params.get("controleur"), action: "list", params: [offset: params.get("offset") , max: params.get("max")])
+    }
 }

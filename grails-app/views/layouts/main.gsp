@@ -12,7 +12,11 @@
         <div id="body-wrapper">
             <header>
                 <div id="header-content-wrapper">
-                    <div id="title">BiblioJ</div>
+                    <div id="title">
+                        <g:link controller="livre" action="list">
+                           BiblioJ
+                        </g:link>
+                    </div>
                     <div id="search-wrapper">
                         <g:form controller="livre" method="post" action="search">
                             <div id="input-wrapper">
@@ -22,21 +26,22 @@
                             <div id="options-wrapper">
                                 <div>
                                     <label for="filterTitle">Titre</label>
-                                    <input type="checkbox" name="filterTitle" id="filterTitle" ${(params.titleChecked != "false") ? "checked" : ""}>
+                                    <input type="checkbox" name="filterTitle" id="filterTitle" ${(params.titleChecked == "true") ? "checked" : ""}>
                                 </div>
                                 <div>
                                     <label for="filterAuthor">Auteur</label>
-                                    <input type="checkbox" name="filterAuthor" id="filterAuthor" ${(params.authorChecked != "true") ? "" : "checked"}>
+                                    <input type="checkbox" name="filterAuthor" id="filterAuthor" ${(params.authorChecked == "true") ? "checked" : ""}>
                                 </div>
                                 <div>
                                     <label for="filterDoctype">Type</label>
-                                    <input type="checkbox" name="filterDoctype" id="filterDoctype" ${(params.doctypeChecked != "true") ? "" : "checked"}>
+                                    <input type="checkbox" name="filterDoctype" id="filterDoctype" ${(params.doctypeChecked == "true") ? "checked" : ""}>
                                 </div>
                             </div>
                         </g:form>
                     </div>
                     <div id="panier-wrapper">
-                        <g:form controller="livre" method="post" action="addToReservation">
+                        <g:form controller="reservation" method="post" action="addToReservation">
+                            <input type="hidden" name="controleur" value="livre" />
                             <input type="hidden" name="offset" value="${params.get("offset")}"/>
                             <input type="hidden" name="max" value="${params.get("max")}"/>
                             <input type="submit" value="Valider réservation"/>

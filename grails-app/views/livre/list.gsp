@@ -12,7 +12,9 @@
                 <g:if test="${livreInstanceTotal > 0}">
                     <g:each in="${livreInstanceList}" status="i" var="livreInstance">
                         <li class="${(i % 2) == 0 ? 'even' : 'odd'}">
-                            <div class="book-thumbnail"></div>
+                            <div class="book-thumbnail">
+                                <button>Ajout panier</button>
+                            </div>
                             <div class="book-title">${fieldValue(bean: livreInstance, field: "titre")}</div>
                             <div class="book-author">
                                 <g:each in="${livreInstance.auteurs}" status="j" var="auteurInstance">

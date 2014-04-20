@@ -6,13 +6,54 @@ class LivreController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-    def index() {
+    def searchableService
+
+    def search() {
+        def query = params.query
+        params.titleChecked = (params.filterTitle == 'on') ? true : false
+        params.authorChecked = (params.filterAuthor == 'on') ? true : false
+        params.doctypeChecked = (params.filterDoctype == 'on') ? true : false
+
+        if(query){
+
+            def criteria = Livre.createCriteria()
+            def results = criteria {
+                or {
+                    if(params.titleChecked){
+                        ilike("titre", "%"+query+"%")
+                    }
+
+                    if(params.authorChecked){
+                        auteurs {
+                            or {
+                                ilike("nom", "%" + query + "%")
+                                ilike("prenom", "%"+query+"%")
+                            }
+                        }
+                    }
+
+                    if(params.doctypeChecked){
+                        type {
+                            ilike("intitule", "%"+query+"%")
+                        }
+                    }
+                }
+            }
+
+            def max = Math.min(results.size(), 5)
+            render(view: "list", model: [livreInstanceList: results.subList(0, max), livreInstanceTotal: results.size(), params: params])
+        }
+        else{
+            redirect(action: "list", params: params)
+        }
+    }
+
+    def index(Integer max) {
         redirect(action: "list", params: params)
     }
 
     def list(Integer max) {
-        println("List: ${params}")
-        params.max = Math.min(max ?: 5, 100)
+        params.max = Math.min(max ?: 10, 100)
         [livreInstanceList: Livre.list(params), livreInstanceTotal: Livre.count()]
     }
 
@@ -116,7 +157,7 @@ class LivreController {
 
         //si le panier ne contient pas le livre on l'ajoute
         if((!panier.livre) || (!panier.livre*.titre.contains(livre.titre))) {
-                panier.addToLivre(livre)
+            panier.addToLivre(livre)
         }
         println (session.getId() + " : " + panier.livre)
         redirect(action: "list", params: [offset: params.get("offset") , max: params.get("max")])
@@ -149,6 +190,7 @@ class LivreController {
     }
 
     def addToReservation() {
+        println "TROLL"
         Panier panier = session.getAttribute("panier")
         if (panier) {
             Reservation reserv = new Reservation(code: 1,  dateReservation: new Date()).save(failOnError: true)

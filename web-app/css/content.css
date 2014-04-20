@@ -1,0 +1,71 @@
+#content {
+    border-radius:4px;
+    margin:20px auto;
+    width:60%;
+    background-color:whitesmoke;
+    box-shadow: -1px 2px 10px 3px rgba(0, 0, 0, 0.3);
+    padding:20px 0px 40px 0px;
+}
+
+#content ul {
+    list-style-type:none;
+    padding:0;
+    text-align:center;
+    margin-top:10px;
+}
+
+#content ul li {
+    display:inline-block;
+    vertical-align:top;
+    width:200px;
+    margin:0px 5px 30px 5px;
+}
+
+#content ul #no-result {
+    font-family:arial, helvetica, verdana, sans-serif;
+}
+
+#content li .book-thumbnail {
+    width:124px;
+    height:150px;
+    background-color:gray;
+}
+
+#content li .book-title, #content li .book-author, #content li .book-type, #content li .book-quantity {
+    width:100%;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    text-align:left;
+    margin-top:7px;
+    font-family:Helvetica;
+}
+
+#content li .book-title {
+    font-size:1em;
+}
+
+#content li .book-author {
+    font-size:0.9em;
+    font-weight:lighter;
+}
+
+#content li .book-type {
+    font-size:0.8em;
+    font-weight:lighter;
+}
+
+#content li .book-quantity {
+    font-size:0.7em;
+    font-weight:lighter;
+}
+
+#book-pagination {
+    text-align:center;
+    padding:0px 10px 0px 10px;
+    margin-top:15px;
+}
+
+#book-pagination .currentStep, #book-pagination .step, #book-pagination .prevLink, #book-pagination .nextLink {
+    padding:0px 5px 0px 5px;
+}

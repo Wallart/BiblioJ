@@ -1,5 +1,4 @@
 package biblioj
-import org.compass.core.engine.SearchEngineQueryParseException
 
 class Livre {
 
@@ -8,25 +7,11 @@ class Livre {
     Number nombreExemplairesDisponibles
     TypeDocument type
 
-    static hasMany = [auteur:Auteur, reservation:Reservation]
+    static hasMany = [auteurs:Auteur, reservations:Reservation]
     static belongsTo = [Auteur, Reservation]
-    static searchable = {
-        components: true
-    }
+    static searchable = true
 
     static constraints = {
+        type nullable: true
     }
-
-    //def searchableService
-
-    /*def index = {
-        if (!params.q?.trim()) {
-            return [:]
-        }
-        try {
-            return [searchResult: searchableService.search(params.q, params)]
-        } catch (SearchEngineQueryParseException ex) {
-            return [parseException: true]
-        }
-    }*/
 }

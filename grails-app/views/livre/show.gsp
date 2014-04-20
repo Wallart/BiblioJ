@@ -22,12 +22,12 @@
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
 			<ol class="property-list livre">
-			
-				<g:if test="${livreInstance?.auteur}">
+
+				<g:if test="${livreInstance?.auteurs}">
 				<li class="fieldcontain">
 					<span id="auteur-label" class="property-label"><g:message code="livre.auteur.label" default="Auteur" /></span>
 					
-						<g:each in="${livreInstance.auteur}" var="a">
+						<g:each in="${livreInstance.auteurs}" var="a">
 						<span class="property-value" aria-labelledby="auteur-label"><g:link controller="auteur" action="show" id="${a.id}">${a?.encodeAsHTML()}</g:link></span>
 						</g:each>
 					
@@ -52,26 +52,26 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${livreInstance?.reservation}">
+				<g:if test="${livreInstance?.reservations}">
 				<li class="fieldcontain">
 					<span id="reservation-label" class="property-label"><g:message code="livre.reservation.label" default="Reservation" /></span>
 					
-						<g:each in="${livreInstance.reservation}" var="r">
+						<g:each in="${livreInstance.reservations}" var="r">
 						<span class="property-value" aria-labelledby="reservation-label"><g:link controller="reservation" action="show" id="${r.id}">${r?.encodeAsHTML()}</g:link></span>
 						</g:each>
 					
 				</li>
 				</g:if>
-			
+
 				<g:if test="${livreInstance?.titre}">
 				<li class="fieldcontain">
 					<span id="titre-label" class="property-label"><g:message code="livre.titre.label" default="Titre" /></span>
-					
+
 						<span class="property-value" aria-labelledby="titre-label"><g:fieldValue bean="${livreInstance}" field="titre"/></span>
-					
+
 				</li>
 				</g:if>
-			
+
 				<g:if test="${livreInstance?.type}">
 				<li class="fieldcontain">
 					<span id="type-label" class="property-label"><g:message code="livre.type.label" default="Type" /></span>

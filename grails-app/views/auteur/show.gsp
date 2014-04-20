@@ -23,11 +23,11 @@
 			</g:if>
 			<ol class="property-list auteur">
 			
-				<g:if test="${auteurInstance?.livre}">
+				<g:if test="${auteurInstance?.livres}">
 				<li class="fieldcontain">
 					<span id="livre-label" class="property-label"><g:message code="auteur.livre.label" default="Livre" /></span>
 					
-						<g:each in="${auteurInstance.livre}" var="l">
+						<g:each in="${auteurInstance.livres}" var="l">
 						<span class="property-value" aria-labelledby="livre-label"><g:link controller="livre" action="show" id="${l.id}">${l?.encodeAsHTML()}</g:link></span>
 						</g:each>
 					

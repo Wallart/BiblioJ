@@ -1,7 +1,6 @@
 import biblioj.Livre
 import biblioj.TypeDocument
 import biblioj.Auteur
-import org.grails.plugins.csv.CSVMapReader
 
 class BootStrap {
 

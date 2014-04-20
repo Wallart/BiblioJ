@@ -1,28 +1,45 @@
 <!DOCTYPE html>
-<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
-<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
-<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
-<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"><!--<![endif]-->
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<title><g:layoutTitle default="Grails"/></title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
-		<link rel="apple-touch-icon" href="${resource(dir: 'images', file: 'apple-touch-icon.png')}">
-		<link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
-		<link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
-		<link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile.css')}" type="text/css">
-		<g:layoutHead/>
-		<r:layoutResources />
-	</head>
-	<body>
-		<div id="grailsLogo" role="banner"><a href="http://grails.org"><img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/></a></div>
-		<g:layoutBody/>
-		<div class="footer" role="contentinfo"></div>
-		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
-		<g:javascript library="application"/>
-		<r:layoutResources />
-	</body>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>BiblioJ</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" type="text/css" href="${resource(dir: 'css', file: 'main.css')}"/>
+        <link rel="stylesheet" type="text/css" href="${resource(dir: 'css', file: 'content.css')}"/>
+        <g:layoutHead/>
+    </head>
+    <body>
+        <div id="body-wrapper">
+            <header>
+                <div id="header-content-wrapper">
+                    <g:form controller="livre" action="search">
+                        <div id="search-wrapper">
+                            <div id="input-wrapper">
+                                <input type="text" name="query" value="${params.query}" placeholder="Rechercher sur BiblioJ" />
+                                <input type="submit" value="Rechercher" />
+                            </div>
+                            <div id="options-wrapper">
+                                <div>
+                                    <label for="filterTitle">Titre</label>
+                                    <input type="checkbox" name="filterTitle" id="filterTitle" ${(params.titleChecked != "false") ? "checked" : ""}>
+                                </div>
+                                <div>
+                                    <label for="filterAuthor">Auteur</label>
+                                    <input type="checkbox" name="filterAuthor" id="filterAuthor" ${(params.authorChecked != "true") ? "" : "checked"}>
+                                </div>
+                                <div>
+                                    <label for="filterDoctype">Type</label>
+                                    <input type="checkbox" name="filterDoctype" id="filterDoctype" ${(params.doctypeChecked != "true") ? "" : "checked"}>
+                                </div>
+                            </div>
+                        </div>
+                    </g:form>
+                </div>
+            </header>
+            <div id="content-wrapper">
+                <g:layoutBody/>
+            </div>
+            <footer></footer>
+        </div>
+    </body>
 </html>

@@ -8,54 +8,53 @@ class LivreController {
 
     def searchableService
 
-    /*def index = {
-        if (!params.q?.trim()) {
-            return [:]
-        }
-        try {
-            return [searchResult: searchableService.search(params.q, params)]
-        } catch (SearchEngineQueryParseException ex) {
-            return [parseException: true]
-        }
-    }*/
-
     def search() {
         def query = params.query
+        params.titleChecked = (params.filterTitle == 'on') ? true : false
+        params.authorChecked = (params.filterAuthor == 'on') ? true : false
+        params.doctypeChecked = (params.filterDoctype == 'on') ? true : false
+
         if(query){
 
             def criteria = Livre.createCriteria()
             def results = criteria {
-                ilike("titre", "%"+query+"%")
                 or {
-                    auteurs {
-                        ilike("nom", "%" + query + "%")
-                        /*or {
-                            ilike("prenom", "%"+query+"%")
-                        }*/
+                    if(params.titleChecked){
+                        ilike("titre", "%"+query+"%")
+                    }
+
+                    if(params.authorChecked){
+                        auteurs {
+                            or {
+                                ilike("nom", "%" + query + "%")
+                                ilike("prenom", "%"+query+"%")
+                            }
+                        }
+                    }
+
+                    if(params.doctypeChecked){
+                        type {
+                            ilike("intitule", "%"+query+"%")
+                        }
                     }
                 }
             }
 
-            println results
-            //def results = searchableService.search(query)
-            //params.max = 5
-
-            render(view: "list", model: [livreInstanceList: results, livreInstanceTotal: results.size()])
-            //redirect(action: "list")
+            def max = Math.min(results.size(), 5)
+            render(view: "list", model: [livreInstanceList: results.subList(0, max), livreInstanceTotal: results.size(), params: params])
         }
         else{
-            redirect(action: "list")
+            redirect(action: "list", params: params)
         }
     }
 
-    def index() {
+    def index(Integer max) {
         redirect(action: "list", params: params)
     }
 
     def list(Integer max) {
-        println("List: ${params}")
-        params.max = Math.min(max ?: 5, 100)
-        [livreInstanceList: Livre.list(params), livreInstanceTotal: Livre.count()]
+        params.max = Math.min(max ?: 10, 100)
+        [livreInstanceList: Livre.list(), livreInstanceTotal: Livre.count()]
     }
 
     def create() {
@@ -141,29 +140,5 @@ class LivreController {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'livre.label', default: 'Livre'), id])
             redirect(action: "show", id: id)
         }
-    }
-
-    def addToPanier() {
-        def panier = Panier.findByIdSession(session.getId())
-        if (!panier) {
-            println ("Allocation!")
-            panier = new Panier(idSession: session.getId()).save()
-        }
-        def livre = Livre.findByTitre(params.get("nomlivre"))
-        panier.addToLivre(livre)
-        println (session.getId() + " : " + panier.livre)
-        redirect(action: "list")
-    }
-
-    def removeFromPanier() {
-        def panier = Panier.findByIdSession(session.getId())
-        if (!panier) {
-            println ("Allocation!")
-            panier = new Panier(idSession: session.getId()).save()
-        }
-        def livre = Livre.findByTitre(params.get("nomlivre"))
-        panier.removeFromLivre(livre)
-        println (session.getId() + " : " + panier.livre)
-        redirect(action: "list")
     }
 }

@@ -31,6 +31,13 @@
 						<g:sortableColumn property="titre" title="${message(code: 'livre.titre.label', default: 'Titre')}" />
 
 						<th><g:message code="livre.type.label" default="Type" /></th>
+                        <th>
+                            <g:form method="post" action="addToReservation">
+                                <input type="hidden" name="offset" value="${params.get("offset")}"/>
+                                <input type="hidden" name="max" value="${params.get("max")}"/>
+                                <input type="submit" name="Valider Reservation" value="Reserver"/>
+                            </g:form>
+                        </th>
 					
 					</tr>
 				</thead>
@@ -48,16 +55,21 @@
 
                         <td>
                             <%
-                                if (!Panier.findByIdSession(session.getId())?.livre?.contains(livreInstance)) {
+                                Panier panier = session.getAttribute("panier")
+                                if(livreInstance.nombreExemplairesDisponibles == 0) {
                             %>
-                                <g:form action="addToPanier" method="post" >
+                                   <p style="color: '#8b0000'"> Stock Epuisé </p>
+                            <%
+                                } else if((!panier?.livre) || (!panier.livre*.titre.contains(livreInstance.titre))) {
+                            %>
+                                <g:form action="addToPanier" method="post" params="[offset: params.get('offset'), max: params.get('max')]">
                                     <input type="hidden" name="nomlivre" value="${fieldValue(bean: livreInstance, field: "titre")}" />
                                     <input type="submit" value="Ajouter Au Panier" />
                                 </g:form>
                             <%
                                 } else {
                             %>
-                            <g:form action="removeFromPanier" method="post" >
+                            <g:form action="removeFromPanier" method="post" params="[offset: params.get('offset'), max: params.get('max')]">
                                 <input type="hidden" name="nomlivre" value="${fieldValue(bean: livreInstance, field: "titre")}" />
                                 <input type="submit" value="Retirer Du Panier" />
                             </g:form>

@@ -12,8 +12,9 @@
         <div id="body-wrapper">
             <header>
                 <div id="header-content-wrapper">
-                    <g:form controller="livre" action="search">
-                        <div id="search-wrapper">
+                    <div id="title">BiblioJ</div>
+                    <div id="search-wrapper">
+                        <g:form controller="livre" method="post" action="search">
                             <div id="input-wrapper">
                                 <input type="text" name="query" value="${params.query}" placeholder="Rechercher sur BiblioJ" />
                                 <input type="submit" value="Rechercher" />
@@ -32,8 +33,15 @@
                                     <input type="checkbox" name="filterDoctype" id="filterDoctype" ${(params.doctypeChecked != "true") ? "" : "checked"}>
                                 </div>
                             </div>
-                        </div>
-                    </g:form>
+                        </g:form>
+                    </div>
+                    <div id="panier-wrapper">
+                        <g:form controller="livre" method="post" action="addToReservation">
+                            <input type="hidden" name="offset" value="${params.get("offset")}"/>
+                            <input type="hidden" name="max" value="${params.get("max")}"/>
+                            <input type="submit" value="Valider réservation"/>
+                        </g:form>
+                    </div>
                 </div>
             </header>
             <div id="content-wrapper">

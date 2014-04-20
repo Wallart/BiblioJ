@@ -141,4 +141,72 @@ class LivreController {
             redirect(action: "show", id: id)
         }
     }
+
+    def addToPanier() {
+        //Recuperer le panier de la session
+        Panier panier = session.getAttribute("panier")
+
+        //si le panier n'existe pas on le cree dans la session
+        if (!panier) {
+            println ("Allocation!")
+            panier = new Panier(idSession: session.getId())
+            session["panier"] = panier
+        }
+        //on recupere le livre correspondant a la requete a partir de la BDD
+        def livre = Livre.findByTitre(params.get("nomlivre"))
+
+        //si le panier ne contient pas le livre on l'ajoute
+        if((!panier.livre) || (!panier.livre*.titre.contains(livre.titre))) {
+            panier.addToLivre(livre)
+        }
+        println (session.getId() + " : " + panier.livre)
+        redirect(action: "list", params: [offset: params.get("offset") , max: params.get("max")])
+    }
+
+    def removeFromPanier() {
+
+        Panier panier = session.getAttribute("panier")
+        if (!panier) {
+            println ("Allocation!")
+            panier = new Panier(idSession: session.getId())
+            session["panier"] = panier
+        }
+
+        // A optimiser, trouver un moyen de rechercher un objet d'une liste a partir
+        // d'un attribut
+        def livre
+        // Récupérer la liste des titres des livres
+        def liste = panier.livre.asList()*.titre
+        for (int i = 0; i < liste.size(); i++) {
+            if (liste.get(i).equals(params.get("nomlivre"))) {
+                livre = panier.livre.asList().get(i)
+                break;
+            }
+        }
+        // on retire le livre du panier
+        panier.removeFromLivre(livre)
+        println (session.getId() + " : " + panier.livre)
+        redirect(action: "list", params: [offset: params.get("offset") , max: params.get("max")])
+    }
+
+    def addToReservation() {
+        println "TROLL"
+        Panier panier = session.getAttribute("panier")
+        if (panier) {
+            Reservation reserv = new Reservation(code: 1,  dateReservation: new Date()).save(failOnError: true)
+            def liste = panier.livre?.asList()*.titre
+            while(!liste?.isEmpty()) {
+                def livre = Livre.findByTitre(liste.get(0))
+                def nbExemplairesDisponible = livre.getNombreExemplairesDisponibles()
+                Livre.findByTitre(liste.get(0)).setNombreExemplairesDisponibles(nbExemplairesDisponible - 1)
+                reserv.addToLivre(Livre.findByTitre(liste.get(0)))
+                liste.remove(0);
+            }
+            panier.livre?.clear()
+        } else {
+            // Rien faire car il n'ya rien dans le panier
+        }
+        // Rediriger vers la vue reservation
+        redirect(action: "list", params: [offset: params.get("offset") , max: params.get("max")])
+    }
 }

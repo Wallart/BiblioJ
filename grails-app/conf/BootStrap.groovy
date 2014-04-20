@@ -5,8 +5,8 @@ import biblioj.Auteur
 class BootStrap {
 
     def init = { servletContext ->
-        /*new File("dataCorpus.csv").toCsvReader(["charset":"iso-8859-1", "separatorChar":";", "skipLines":1]).eachLine { tokens ->
-            def (nom, prenom) = tokens[4].tokenize(", ")*/
+        new File("dataCorpus.csv").toCsvReader(["charset":"iso-8859-1", "separatorChar":";", "skipLines":1]).eachLine { tokens ->
+            def (nom, prenom) = tokens[4].tokenize(", ")
 
             /*
              * On vérifie que le Type de Document n'existe pas déjà.
@@ -22,7 +22,9 @@ class BootStrap {
              */
             /*def book = Livre.findByTitre(tokens[3])
             if(book == null){
-                book = new Livre(titre:tokens[3], nombreExemplaires: 0, nombreExemplairesDisponibles: 0, type:doc).save(failOnError: true)
+                def exemplaires = (int) (Math.random()*1000)
+                def dispo = (int) (Math.random()*exemplaires)
+                book = new Livre(titre:tokens[3], nombreExemplaires: exemplaires, nombreExemplairesDisponibles: dispo, type:doc).save(failOnError: true)
             }*/
 
             /*
@@ -32,8 +34,8 @@ class BootStrap {
             if(author == null){
                 author = new Auteur(nom: nom, prenom: prenom).save(failOnError: true)
             }
-            author.addToLivres(book)
-        }*/
+            author.addToLivres(book)*/
+        }
     }
     def destroy = {
     }

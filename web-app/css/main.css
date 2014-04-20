@@ -33,8 +33,30 @@ header {
     overflow:hidden;
 }
 
+#title {
+    color:white;
+    margin-top:15px;
+    display:inline-block;
+    vertical-align:top;
+    width:15%;
+    font:1.8em Gill Sans, My Gill Sans, sans-serif;
+    font-weight:bold;
+    border:1px solid white;
+}
 
 #search-wrapper {
+    display:inline-block;
+    vertical-align:top;
+    border:1px solid white;
+    width:60%;
+}
+
+#panier-wrapper {
+    display:inline-block;
+    vertical-align:top;
+    width:15%;
+    height:70px;
+    border:1px solid white;
 }
 
 #search-wrapper #input-wrapper {
@@ -54,7 +76,7 @@ header {
 }
 
 #input-wrapper input[type="text"] {
-    width:48%;
+    width:60%;
 }
 
 #input-wrapper input[type="submit"] {

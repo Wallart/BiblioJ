@@ -31,7 +31,7 @@
     background-color:gray;
 }
 
-#content li .book-title, #content li .book-author, #content li .book-type {
+#content li .book-title, #content li .book-author, #content li .book-type, #content li .book-quantity {
     width:100%;
     white-space:nowrap;
     overflow:hidden;
@@ -52,6 +52,11 @@
 
 #content li .book-type {
     font-size:0.8em;
+    font-weight:lighter;
+}
+
+#content li .book-quantity {
+    font-size:0.7em;
     font-weight:lighter;
 }
 

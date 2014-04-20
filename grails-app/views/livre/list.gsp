@@ -1,4 +1,4 @@
-<%@ page import="biblioj.Livre" %>
+<%@ page import="biblioj.Livre; biblioj.Panier" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -13,7 +13,24 @@
                     <g:each in="${livreInstanceList}" status="i" var="livreInstance">
                         <li class="${(i % 2) == 0 ? 'even' : 'odd'}">
                             <div class="book-thumbnail">
-                                <button>Ajout panier</button>
+                                <%
+                                    Panier panier = session.getAttribute("panier")
+                                    if(panier?.livre && panier.livre*.titre.contains(livreInstance.titre)){
+                                %>
+                                <g:form action="removeFromPanier" method="post" params="[offset: params.get('offset'), max: params.get('max')]">
+                                    <input type="hidden" name="nomlivre" value="${fieldValue(bean: livreInstance, field: "titre")}" />
+                                    <input type="submit" value="Retirer Du Panier" />
+                                </g:form>
+                                <%
+                                    } else if(livreInstance.nombreExemplairesDisponibles > 0){
+                                %>
+                                <g:form action="addToPanier" method="post" params="[offset: params.get('offset'), max: params.get('max')]">
+                                    <input type="hidden" name="nomlivre" value="${fieldValue(bean: livreInstance, field: "titre")}" />
+                                    <input type="submit" value="Ajouter Au Panier" />
+                                </g:form>
+                                <%
+                                    }
+                                %>
                             </div>
                             <div class="book-title">${fieldValue(bean: livreInstance, field: "titre")}</div>
                             <div class="book-author">
@@ -22,6 +39,7 @@
                                 </g:each>
                             </div>
                             <div class="book-type">${fieldValue(bean: livreInstance.type, field: "intitule")}</div>
+                            <div class="book-quantity">Exemplaires diponibles : ${livreInstance.nombreExemplairesDisponibles}</div>
                             <!--<p><g:link action="show" id="${livreInstance.id}">${fieldValue(bean: livreInstance, field: "nombreExemplaires")}</g:link></p>
 
                         <p>${fieldValue(bean: livreInstance, field: "nombreExemplairesDisponibles")}</p>

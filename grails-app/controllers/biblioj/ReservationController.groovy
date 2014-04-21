@@ -1,6 +1,12 @@
 package biblioj
 
+import org.bouncycastle.jce.provider.JDKMessageDigest
 import org.springframework.dao.DataIntegrityViolationException
+import sun.security.provider.SHA
+
+import java.text.DateFormat
+import java.text.ParseException
+import java.text.SimpleDateFormat
 
 class ReservationController {
 
@@ -103,21 +109,40 @@ class ReservationController {
     def addToReservation() {
 
         Panier panier = session.getAttribute("panier")
+        def idReservation
+        def date
         if (panier) {
-            Reservation reserv = new Reservation(code: 1,  dateReservation: new Date()).save(failOnError: true)
-            def liste = panier.livre?.asList()*.titre
-            while(!liste?.isEmpty()) {
-                def livre = Livre.findByTitre(liste.get(0))
-                def nbExemplairesDisponible = livre.getNombreExemplairesDisponibles()
-                Livre.findByTitre(liste.get(0)).setNombreExemplairesDisponibles(nbExemplairesDisponible - 1)
-                reserv.addToLivre(Livre.findByTitre(liste.get(0)))
-                liste.remove(0);
+            println params.get("dateDeReservation")
+            idReservation = "${System.currentTimeMillis().toString()} ${session.id}".encodeAsMD5().toUpperCase()
+            println "Identifiant: ${idReservation}"
+            try {
+                date = new Date().parse("yyyy-MM-dd", params.get("dateDeReservation").toString())
+                if (date.before(new Date())) {
+                    new Date().parse("","sknglksng")
+                }
+
+                Reservation reserv = new Reservation(code: idReservation, dateReservation: date).save(failOnError: true)
+                def liste = panier.livre?.asList()*.titre
+                while (!liste?.isEmpty()) {
+                    def livre = Livre.findByTitre(liste.get(0))
+                    def nbExemplairesDisponible = livre.getNombreExemplairesDisponibles()
+                    Livre.findByTitre(liste.get(0)).setNombreExemplairesDisponibles(nbExemplairesDisponible - 1)
+                    reserv.addToLivre(Livre.findByTitre(liste.get(0)))
+                    liste.remove(0);
+                }
+                panier.livre?.clear()
+                DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                String reportDate = df.format(date);
+                reportDate.replace("/", " / ");
+                redirect(action: "list", params: [idReservation: idReservation, dateReservation: reportDate])
+            } catch (java.text.ParseException e) {
+                redirect(action: "list", params: [dateError: "Veuillez Entrer Une Date Valide, supérieure au : '${new Date().toGMTString()}'"])
             }
-            panier.livre?.clear()
         } else {
             // Rien faire car il n'ya rien dans le panier
+            redirect(action: "list", params: [idReservation: idReservation, dateReservation: date?.toString()])
         }
         // Rediriger vers la vue reservation
-        redirect(controller: params.get("controleur"), action: "list", params: [offset: params.get("offset") , max: params.get("max")])
+
     }
 }

@@ -12,25 +12,44 @@
         <div id="body-wrapper">
             <header>
                 <div id="header-content-wrapper">
-                    <div id="title"><g:link action="${session["actualRequest"] = null}">BiblioJ</g:link></div>
+                    <div id="title"><g:link controller="livre" action="search" params="[query: '']">BiblioJ</g:link></div>
                     <div id="search-wrapper">
+                        <%
+                            def titleChecked
+                            def authorChecked
+                            def doctypeChecked
+                            def query
+
+                            if (session["actualRequest"]) {
+                                titleChecked = session.getAttribute("titleChecked")
+                                authorChecked = session.getAttribute("authorChecked")
+                                doctypeChecked = session.getAttribute("doctypeChecked")
+                                query = session.getAttribute("query")
+                            } else {
+                                titleChecked = "true"
+                                authorChecked = params.authorChecked
+                                doctypeChecked = params.doctypeChecked
+                                query = params.query
+                            }
+                        %>
                         <g:form controller="livre" method="post" action="search">
                             <div id="input-wrapper">
-                                <input type="text" name="query" value="${params.query}" placeholder="Rechercher sur BiblioJ" />
+                                <input type="text" name="query" value="${query}" placeholder="Rechercher sur BiblioJ" />
                                 <input type="submit" value="Rechercher" />
                             </div>
                             <div id="options-wrapper">
+
                                 <div>
                                     <label for="filterTitle">Titre</label>
-                                    <input type="checkbox" name="filterTitle" id="filterTitle" ${(params.titleChecked == "true") ? "checked" : ""}>
+                                    <input type="checkbox" name="filterTitle" id="filterTitle" ${(titleChecked == "true") ? "checked" : ""}>
                                 </div>
                                 <div>
                                     <label for="filterAuthor">Auteur</label>
-                                    <input type="checkbox" name="filterAuthor" id="filterAuthor" ${(params.authorChecked == "true") ? "checked" : ""}>
+                                    <input type="checkbox" name="filterAuthor" id="filterAuthor" ${(authorChecked == "true") ? "checked" : ""}>
                                 </div>
                                 <div>
                                     <label for="filterDoctype">Type</label>
-                                    <input type="checkbox" name="filterDoctype" id="filterDoctype" ${(params.doctypeChecked == "true") ? "checked" : ""}>
+                                    <input type="checkbox" name="filterDoctype" id="filterDoctype" ${(doctypeChecked == "true") ? "checked" : ""}>
                                 </div>
                             </div>
                         </g:form>
@@ -75,7 +94,7 @@
                                 </ul>
                                 <div id="reserve-wrapper">
                                     <div class="panier-sep"></div>
-                                    <g:form controller="reservation" method="post" action="addToReservation">
+                                    <g:form controller="reservation" method="post" action="list">
                                         <input type="hidden" name="controleur" value="livre" />
                                         <input type="hidden" name="offset" value="${params.get("offset")}"/>
                                         <input type="hidden" name="max" value="${params.get("max")}"/>

@@ -8,9 +8,12 @@
     <div id="content">
         <h1 class="title">Réservation</h1>
         <div id="reservation-view">
-            <g:if test="${params.get("dateError")}">
-                <p class="errorReserv">  ${params.get("dateError")}</p>
+            <g:if test="${params.get("dateError") && params.get("vide")?.equals("true")}">
+                <p class="errorReserv">  ${params.get("dateError")} </p>
             </g:if>
+            <g:elseif test="${params.get("dateError")}">
+                <p class="errorReserv"> ${params.get("dateError")} </p>
+            </g:elseif>
             <g:if test="${!session.getAttribute("panier")?.livre?.isEmpty()}">
                 <div id="dateReserv-form">
                     <g:form controller="reservation" action="addToReservation">
@@ -18,7 +21,9 @@
                             <label for="dateReserv">Date de reservation : </label>
                             <input id="dateReserv" type="date" name="dateDeReservation"/>
                         </div>
-                        <input type="submit" value="Confirmer">
+                        <g:if test="${!params.get("vide")?.equals("true")}">
+                            <input type="submit" value="Confirmer">
+                        </g:if>
                     </g:form>
                     <g:form controller="panier" action="clearPanier">
                         <input id="cancel-reserve" type="submit" value="Annuler">
@@ -31,13 +36,11 @@
                 </ul>
             </g:if>
             <g:elseif test="${(params.get("idReservation")) && (params.get("idReservation")?.toString() != "") }">
-                <p class="textReserv" >  Reservation Numero: <i>'${params.get("idReservation")}' Effectuée avec succès </i><br>
-                </p>
-                <p class="textReserv" >  Limite de récupération: <i>'${params.get("dateReservation")}'</i> + 24h
-                </p>
+                <p class="textReserv">Réservation numéro : '${params.get("idReservation")}' effectuée avec succès.</p>
+                <p class="textReserv">Limite de récupération : '${params.get("dateReservation")}' + 24h</p>
             </g:elseif>
             <g:else>
-                <p class="textReserv" >  <i>Panier Vide Impossible de reserver, veuillez ajouter au moins un element</i></p>
+                <p class="errorReserv" >Panier vide. Réservation impossible, veuillez ajouter au moins un élément</p>
             </g:else>
             <p id="home-link">
                 <g:link controller="livre" action="list">

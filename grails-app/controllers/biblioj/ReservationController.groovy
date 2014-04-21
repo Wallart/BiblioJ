@@ -109,12 +109,11 @@ class ReservationController {
     def addToReservation() {
 
         Panier panier = session.getAttribute("panier")
+        ArrayList<String> LivrePlusDisponibles = new ArrayList()
         def idReservation
         def date
         if (panier) {
-            println params.get("dateDeReservation")
             idReservation = "${System.currentTimeMillis().toString()} ${session.id}".encodeAsMD5().toUpperCase()
-            println "Identifiant: ${idReservation}"
             try {
                 date = new Date().parse("yyyy-MM-dd", params.get("dateDeReservation").toString())
                 if (date.before(new Date())) {
@@ -123,26 +122,70 @@ class ReservationController {
 
                 Reservation reserv = new Reservation(code: idReservation, dateReservation: date).save(failOnError: true)
                 def liste = panier.livre?.asList()*.titre
-                while (!liste?.isEmpty()) {
-                    def livre = Livre.findByTitre(liste.get(0))
+                println liste
+                for (int i = 0; i < liste?.size(); i++) {
+                    println 12
+                    def livre = Livre.findByTitre(liste.get(i))
                     def nbExemplairesDisponible = livre.getNombreExemplairesDisponibles()
-                    Livre.findByTitre(liste.get(0)).setNombreExemplairesDisponibles(nbExemplairesDisponible - 1)
-                    reserv.addToLivre(Livre.findByTitre(liste.get(0)))
-                    liste.remove(0);
+                    if (nbExemplairesDisponible == 0) {
+                        println 13
+                        LivrePlusDisponibles.add(liste.get(i))
+                    }
                 }
-                panier.livre?.clear()
-                DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-                String reportDate = df.format(date);
-                reportDate.replace("/", " / ");
-                redirect(action: "list", params: [idReservation: idReservation, dateReservation: reportDate])
+                if (!LivrePlusDisponibles.isEmpty()) {
+                    if (LivrePlusDisponibles.size() == liste.size()) {
+                        println 1
+                        panier.livre?.clear()
+                        def messageErreur = "Plus aucun livre disponible ! Réservation impossible."
+                        redirect(action: "list", params: [dateError: messageErreur, vide: "true"])
+                    } else {
+                        println 2
+                        StringBuffer messageErreur = new StringBuffer()
+                        for (int i = 0; i < LivrePlusDisponibles.size(); i++) {
+                            // A optimiser, trouver un moyen de rechercher un objet d'une liste a partir
+                            // d'un attribut
+                            def livre
+                            // Récupérer la liste des titres des livres
+                            def titres = panier.livre.asList()*.titre
+                            for (int j = 0; j < titres.size(); j++) {
+                                if (titres.get(j).equals(LivrePlusDisponibles.get(i))) {
+                                    livre = panier.livre.asList().get(j)
+                                    break;
+                                }
+                            }
+                            // on retire le livre du panier
+                            panier.removeFromLivre(livre)
+                            messageErreur.append("Le livre ${LivrePlusDisponibles.get(i)} a été retiré, car il n'est plus disponible. <br>")
+                        }
+                        redirect(action: "list", params: [dateError: messageErreur.toString()])
+                    }
+                } else {
+                    println 3
+                    while (!liste?.isEmpty()) {
+                        def livre = Livre.findByTitre(liste.get(0))
+                        def nbExemplairesDisponible = livre.getNombreExemplairesDisponibles()
+                        if (nbExemplairesDisponible > 0) {
+                            Livre.findByTitre(liste.get(0)).setNombreExemplairesDisponibles(nbExemplairesDisponible - 1)
+                            reserv.addToLivre(Livre.findByTitre(liste.get(0)))
+                            liste.remove(0);
+                        }
+                    }
+                    panier.livre?.clear()
+                    DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                    String reportDate = df.format(date);
+                    reportDate.replace("/", " / ");
+                    redirect(action: "list", params: [idReservation: idReservation, dateReservation: reportDate])
+                }
             } catch (java.text.ParseException e) {
                 redirect(action: "list", params: [dateError: "Veuillez Entrer Une Date Valide, supérieure au : '${new Date().toGMTString()}'"])
             }
+
         } else {
+            println 4
             // Rien faire car il n'ya rien dans le panier
             redirect(action: "list", params: [idReservation: idReservation, dateReservation: date?.toString()])
         }
         // Rediriger vers la vue reservation
-
     }
+
 }

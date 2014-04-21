@@ -152,4 +152,14 @@ class PanierController {
             redirect(controller: params.get("controleur"), action: "list", params: [offset: params.get("offset"), max: params.get("max")])
         }
     }
+
+    def clearPanier() {
+        Panier panier = session.getAttribute("panier")
+
+        if(panier?.livre){
+            panier.livre.clear()
+        }
+
+        redirect(controller: "livre", action: "list", params: [offset: params.get("offset") , max: params.get("max")])
+    }
 }

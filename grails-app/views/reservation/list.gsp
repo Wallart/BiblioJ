@@ -7,42 +7,44 @@
 <body>
     <div id="content">
         <h1 class="title">Réservation</h1>
-        <g:if test="${!session.getAttribute("panier")?.livre?.isEmpty()}">
-            <g:form controller="reservation" action="addToReservation">
-                <table>
-                    <tr>
-                        <td>
-                            <p class="textReserv" >  Date de reservation : </p>
-                        </td>
-                        <td>
-                            <input class="textReserv" type="date" name="dateDeReservation"/>
-                        </td>
-                        <td>
-                            <input type="submit" value="Valider Définitivement" class="valReserv">
-                        </td>
-                    </tr>
-                    <tr>
-                        <g:if test="${params.get("dateError")}">
-                            <p class="erreurReserv">  ${params.get("dateError")} </p>
-                        </g:if>
-                    <tr>
-                        <p> </p>
-                    </tr>
-                </table>
-            </g:form>
-        </g:if>
-        <g:elseif test="${(params.get("idReservation")) && (params.get("idReservation")?.toString() != "") }">
-            <p class="textReserv" >  Reservation Numero: <i>'${params.get("idReservation")}' Effectuée avec succès </i><br>
-            </p>
-            <p class="textReserv" >  Limite de récupération: <i>'${params.get("dateReservation")}'</i> + 24h
-            </p>
-        </g:elseif>
-        <g:else>
-            <p class="textReserv" >  <i>Panier Vide Impossible de reserver, veuillez ajouter au moins un element</i></p>
-        </g:else>
-        <g:form controller="livre" action="list" >
-            <input type="submit" value="BiblioJ" class="valReserv">
-        </g:form>
+        <div id="reservation-view">
+            <g:if test="${params.get("dateError")}">
+                <p class="errorReserv">  ${params.get("dateError")}</p>
+            </g:if>
+            <g:if test="${!session.getAttribute("panier")?.livre?.isEmpty()}">
+                <div id="dateReserv-form">
+                    <g:form controller="reservation" action="addToReservation">
+                        <div id="dateReserv-wrapper">
+                            <label for="dateReserv">Date de reservation : </label>
+                            <input id="dateReserv" type="date" name="dateDeReservation"/>
+                        </div>
+                        <input type="submit" value="Confirmer">
+                    </g:form>
+                    <g:form controller="panier" action="clearPanier">
+                        <input id="cancel-reserve" type="submit" value="Annuler">
+                    </g:form>
+                </div>
+                <ul>
+                    <g:each in="${session.getAttribute("panier").livre}" status="i" var="livreInstance">
+                        <li>${fieldValue(bean: livreInstance, field: "titre")}</li>
+                    </g:each>
+                </ul>
+            </g:if>
+            <g:elseif test="${(params.get("idReservation")) && (params.get("idReservation")?.toString() != "") }">
+                <p class="textReserv" >  Reservation Numero: <i>'${params.get("idReservation")}' Effectuée avec succès </i><br>
+                </p>
+                <p class="textReserv" >  Limite de récupération: <i>'${params.get("dateReservation")}'</i> + 24h
+                </p>
+            </g:elseif>
+            <g:else>
+                <p class="textReserv" >  <i>Panier Vide Impossible de reserver, veuillez ajouter au moins un element</i></p>
+            </g:else>
+            <p id="home-link">
+                <g:link controller="livre" action="list">
+                    Retour à l'accueil
+                </g:link>
+            <p id="home-link">
+        </div>
     </div>
 <!--<div id="body-wrapper">
     <header>

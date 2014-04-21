@@ -58,6 +58,7 @@ header {
     width:15%;
     height:100%;
     position: relative;
+    white-space:nowrap;
 }
 
 #panier-wrapper #panier-infos {
@@ -285,20 +286,10 @@ footer #right-foot {
     margin:0px 0px 20px 0px;
 }
 
-#right-foot span {
+#right-foot img {
     cursor:pointer;
     display:inline-block;
-    width:240px;
-    height:90px;
+    /*width:240px;*/
     margin:0px 10px 0px 10px;
-}
-
-#right-foot #groovy_logo {
-    background-image:url('../images/groovy.png');
-    background-size:cover;
-}
-
-#right-foot #grails_logo {
-    background-image:url('../images/grails.png');
-    background-size:cover;
+    white-space:nowrap;
 }

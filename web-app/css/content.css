@@ -7,6 +7,13 @@
     padding:20px 0px 40px 0px;
 }
 
+#content .title {
+    text-indent:20px;
+    font:1.5em "Open Sans", Helvetica, Arial, sans-serif;
+    color:#6a6a6a;
+    margin-bottom:25px;
+}
+
 #content ul {
     list-style-type:none;
     padding:0;

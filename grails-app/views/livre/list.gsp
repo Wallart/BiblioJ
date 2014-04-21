@@ -8,6 +8,7 @@
 	</head>
 	<body>
         <div id="content">
+            <h1 class="title">Livres</h1>
             <ul id="book-list">
                 <g:if test="${livreInstanceTotal > 0}">
                     <g:each in="${livreInstanceList}" status="i" var="livreInstance">

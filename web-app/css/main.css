@@ -20,7 +20,7 @@ header {
     position:fixed;
     left:0;
     top:0;
-    background-color:#001C20;
+    background-color:#4a6694;
     width:100%;
     height:70px;
     text-align:center;
@@ -86,26 +86,88 @@ header {
 #panier-thumb {
     position: absolute;
     top:70px;
-    background-color:white;
+    background-color:#5e81ba;
     width:200px;
-    height:300px;
     display:none;
-    border:1px solid red;
-    padding-top:10px;
+    padding:15px 10px 15px 10px;
+}
+
+#panier-thumb h1 {
+    color:white;
+    font-family:Helvetica;
+    font-size:1em;
+    text-align:left;
+    margin-bottom:10px;
 }
 
 #panier-thumb ul {
-    border:1px solid red;
     list-style-type:none;
     padding:0;
-    margin-top:15px;
+    margin-bottom:10px;
+    max-height:200px;
+    overflow-y:auto;
+}
+
+#panier-thumb #reserve-wrapper {
+    margin-top:10px;
 }
 
 #panier-thumb ul li {
-    border:1px solid blue;
+    color:white;
     list-style-type:none;
     text-align:left;
-    text-indent:20px;
+    margin-bottom:5px;
+    position: relative;
+}
+
+#panier-thumb ul li:hover {
+    background-color:#4a6694;
+}
+
+#panier-thumb li .book-title, #panier-thumb li .book-author, #panier-thumb li .book-type, #panier-thumb li .book-quantity {
+    width:70%;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    text-align:left;
+    margin-top:7px;
+    font-family:Helvetica;
+}
+
+#panier-thumb li .book-title {
+    font-size:1em;
+}
+
+#panier-thumb li .book-author {
+    font-size:0.9em;
+    font-weight:lighter;
+}
+
+#panier-thumb li .book-cancel {
+    width:32px;
+    height:32px;
+    background:none;
+    background-image:url('../images/basket-remove.png');
+    background-size:cover;
+    position:absolute;
+    top:4px;
+    right:10px;
+    display:none;
+    cursor:pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border:0px;
+}
+
+.panier-sep {
+    border-bottom: 1px solid #ffffff;
+    width:100%;
+    height:1px;
+    margin-bottom:10px;
+}
+
+#panier-thumb li:hover .book-cancel {
+    display:block;
 }
 
 #panier-wrapper:hover #panier-thumb {
@@ -116,33 +178,30 @@ header {
     margin-top:5px;
 }
 
-#input-wrapper input {
+#input-wrapper input, #reserve-wrapper input {
     -webkit-appearance: none;
     -moz-appearance: none;
-    border-radius: 0;
-    border: 1px solid #d3d3d3;
+    border:0px;
+    border-radius:1.5px;
     height: 27px;
     outline: none;
-    text-indent: 5px;
     margin: 0;
-    padding: 0;
+    padding:0px 5px 0px 5px;
 }
 
 #input-wrapper input[type="text"] {
     width:60%;
+    border:0px;
 }
 
-#input-wrapper input[type="submit"] {
-    width:80px;
-    background-color:white;
+#input-wrapper input[type="submit"], #reserve-wrapper input[type="submit"] {
+    font-weight:bold;
+    color:white;
+    background-color:#8cc334;
 }
 
-#input-wrapper input:hover {
-    border: 1px solid #a7a7a7;
-}
-
-#input-wrapper input:focus {
-    border: 1px solid #89b2d6;
+#input-wrapper input[type="submit"]:hover, #reserve-wrapper input[type="submit"]:hover {
+    border: 1px solid #5a850e;
 }
 
 #search-wrapper #options-wrapper {
@@ -163,10 +222,83 @@ header {
 }
 
 footer {
+    /*background-color:#118798 #b9b4e0;*/
     background-color:#3c3c3c;
     width:100%;
     height:375px;
     position:absolute;
     bottom:0;
     color:#a7a7a7;
+    font:1em "Open Sans", Helvetica, Arial, sans-serif;
+}
+
+#footer-wrapper {
+    width:60%;
+    margin:auto;
+}
+
+footer #top-foot {
+    margin-top:30px;
+}
+
+footer #sep-foot {
+    border-bottom: 1px solid #4c4c4c;
+    background-color: #1a1a1a;
+    width:100%;
+    height:1px;
+    margin:30px 0px 30px 0px;
+}
+
+footer #left-foot {
+    display:inline-block;
+    vertical-align:top;
+    width:49.5%;
+    font-size:1em;
+    font-weight:lighter;
+}
+#left-foot img {
+    width:220px;
+    margin-top:20px;
+}
+
+#left-foot span {
+    text-align:left;
+    display:block;
+    margin-bottom:10px;
+}
+#left-foot a {
+    color:white;
+    text-decoration:none;
+    font-weight:bolder;
+}
+
+footer #right-foot {
+    display:inline-block;
+    vertical-align:top;
+    width:49.5%;
+    text-align:center;
+}
+#right-foot p {
+    font-size:1.5em;
+    text-align:left;
+    padding-left:38px;
+    margin:0px 0px 20px 0px;
+}
+
+#right-foot span {
+    cursor:pointer;
+    display:inline-block;
+    width:240px;
+    height:90px;
+    margin:0px 10px 0px 10px;
+}
+
+#right-foot #groovy_logo {
+    background-image:url('../images/groovy.png');
+    background-size:cover;
+}
+
+#right-foot #grails_logo {
+    background-image:url('../images/grails.png');
+    background-size:cover;
 }

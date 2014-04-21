@@ -13,24 +13,28 @@
                     <g:each in="${livreInstanceList}" status="i" var="livreInstance">
                         <li>
                             <div class="book-thumbnail">
-                                <%
-                                    Panier panier = session.getAttribute("panier")
-                                    if(panier?.livre && panier.livre*.titre.contains(livreInstance.titre)){
-                                %>
-                                <g:form action="removeFromPanier" method="post" params="[offset: params.get('offset'), max: params.get('max')]">
-                                    <input type="hidden" name="nomlivre" value="${fieldValue(bean: livreInstance, field: "titre")}" />
-                                    <input type="submit" value="Retirer Du Panier" />
-                                </g:form>
-                                <%
-                                    } else if(livreInstance.nombreExemplairesDisponibles > 0){
-                                %>
-                                <g:form action="addToPanier" method="post" params="[offset: params.get('offset'), max: params.get('max')]">
-                                    <input type="hidden" name="nomlivre" value="${fieldValue(bean: livreInstance, field: "titre")}" />
-                                    <input type="submit" value="Ajouter Au Panier" />
-                                </g:form>
-                                <%
-                                    }
-                                %>
+                                <div class="book-interaction">
+                                    <%
+                                        Panier panier = session.getAttribute("panier")
+                                        if(panier?.livre && panier.livre*.titre.contains(livreInstance.titre)){
+                                    %>
+                                    <g:form controller="panier" action="removeFromPanier" method="post" params="[offset: params.get('offset'), max: params.get('max')]">
+                                        <input type="hidden" name="controleur" value="livre" />
+                                        <input type="hidden" name="nomlivre" value="${fieldValue(bean: livreInstance, field: "titre")}" />
+                                        <input class="removeFromPanier" type="submit" value="" />
+                                    </g:form>
+                                    <%
+                                        } else if(livreInstance.nombreExemplairesDisponibles > 0){
+                                    %>
+                                    <g:form controller="panier" action="addToPanier" method="post" params="[offset: params.get('offset'), max: params.get('max')]">
+                                        <input type="hidden" name="controleur" value="livre" />
+                                        <input type="hidden" name="nomlivre" value="${fieldValue(bean: livreInstance, field: "titre")}" />
+                                        <input class="addToPanier" type="submit" value="" />
+                                    </g:form>
+                                    <%
+                                        }
+                                    %>
+                                </div>
                             </div>
                             <div class="book-title">${fieldValue(bean: livreInstance, field: "titre")}</div>
                             <div class="book-author">

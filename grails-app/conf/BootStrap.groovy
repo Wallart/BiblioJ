@@ -22,7 +22,7 @@ class BootStrap {
              */
             /*def book = Livre.findByTitre(tokens[3])
             if(book == null){
-                def exemplaires = (int) (Math.random()*1000)
+                def exemplaires = (int) (Math.random()*5)
                 def dispo = (int) (Math.random()*exemplaires)
                 book = new Livre(titre:tokens[3], nombreExemplaires: exemplaires, nombreExemplairesDisponibles: dispo, type:doc).save(failOnError: true)
             }*/
@@ -33,8 +33,8 @@ class BootStrap {
             /*def author = Auteur.findByNomAndPrenom(nom, prenom)
             if(author == null){
                 author = new Auteur(nom: nom, prenom: prenom).save(failOnError: true)
-            }*/
-            //author.addToLivres(book)
+            }
+            author.addToLivres(book)*/
         }
     }
     def destroy = {

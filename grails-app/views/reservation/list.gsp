@@ -73,10 +73,18 @@
             %>
         </div>
     </header>
-    <div id="content" style="padding-left: 15px; word-spacing: 1px; letter-spacing: 1px">
+    <div id="content_reservation" style="padding-left: 15px; word-spacing: 1px; letter-spacing: 1px">
         <g:if test="${!session.getAttribute("panier")?.livre?.isEmpty()}">
             <g:form controller="reservation" action="addToReservation">
                 <table>
+                    <tr>
+                        <g:if test="${params.get("dateError") && params.get("vide")?.equals("true")}">
+                            <p class="erreurReserv">  ${params.get("dateError")} </p>
+                        </g:if>
+                        <g:elseif test="${params.get("dateError")}">
+                            <p class="erreurReserv"> ${params.get("dateError")} </p>
+                        </g:elseif>
+                    </tr>
                     <tr>
                         <td>
                             <p class="textReserv" >  Date de reservation : </p>
@@ -84,17 +92,16 @@
                         <td>
                             <input class="textReserv" type="date" name="dateDeReservation"/>
                         </td>
+                        <g:if test="${!params.get("vide")?.equals("true")}">
                         <td>
                             <input type="submit" value="Valider Définitivement" class="valReserv">
                         </td>
+                        </g:if>
+                        <td>
+                            <input type="submit" value="Annuler" class="valReserv">
+                        </td>
                     </tr>
-                    <tr>
-                    <g:if test="${params.get("dateError")}">
-                        <p class="erreurReserv">  ${params.get("dateError")} </p>
-                    </g:if>
-                    <tr>
-                        <p> </p>
-                    </tr>
+
                 </table>
             </g:form>
         </g:if>
@@ -108,7 +115,7 @@
             <p class="textReserv" >  <i>Panier Vide Impossible de reserver, veuillez ajouter au moins un element</i></p>
         </g:else>
         <g:form controller="livre" action="list" >
-            <input type="submit" value="BiblioJ" class="valReserv">
+            <input type="submit" value="Retour" class="valReserv">
         </g:form>
     </div>
     <footer></footer>

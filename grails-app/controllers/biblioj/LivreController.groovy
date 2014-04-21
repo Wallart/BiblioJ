@@ -91,7 +91,6 @@ class LivreController {
 
             // [livreInstanceList: Livre.list(params), livreInstanceTotal: Livre.count()]
         } else {
-            println "HEHE"
             params.max = Math.min(max ?: 10, 100)
             [livreInstanceList: Livre.list(params), livreInstanceTotal: Livre.count()]
         }

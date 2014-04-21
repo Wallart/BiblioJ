@@ -1,10 +1,6 @@
 package biblioj
 
-import org.bouncycastle.jce.provider.JDKMessageDigest
 import org.springframework.dao.DataIntegrityViolationException
-import sun.security.provider.SHA
-
-import java.text.SimpleDateFormat
 
 class ReservationController {
 
@@ -67,8 +63,8 @@ class ReservationController {
         if (version != null) {
             if (reservationInstance.version > version) {
                 reservationInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-                          [message(code: 'reservation.label', default: 'Reservation')] as Object[],
-                          "Another user has updated this Reservation while you were editing")
+                        [message(code: 'reservation.label', default: 'Reservation')] as Object[],
+                        "Another user has updated this Reservation while you were editing")
                 render(view: "edit", model: [reservationInstance: reservationInstance])
                 return
             }
@@ -107,34 +103,21 @@ class ReservationController {
     def addToReservation() {
 
         Panier panier = session.getAttribute("panier")
-        def idReservation
         if (panier) {
-            println params.get("dateDeReservation")
-            idReservation = "${System.currentTimeMillis().toString()} ${session.id}".encodeAsMD5().toUpperCase()
-            println "Identifiant: ${idReservation}"
-            try {
-                def date = new Date().parse("yyyy-MM-dd", params.get("dateDeReservation").toString())
-
-
-                Reservation reserv = new Reservation(code: idReservation, dateReservation: date).save(failOnError: true)
-                def liste = panier.livre?.asList()*.titre
-                while (!liste?.isEmpty()) {
-                    def livre = Livre.findByTitre(liste.get(0))
-                    def nbExemplairesDisponible = livre.getNombreExemplairesDisponibles()
-                    Livre.findByTitre(liste.get(0)).setNombreExemplairesDisponibles(nbExemplairesDisponible - 1)
-                    reserv.addToLivre(Livre.findByTitre(liste.get(0)))
-                    liste.remove(0);
-                }
-                panier.livre?.clear()
-                redirect(action: "list", params: [idReservation: idReservation, dateReservation: params.get('dateReservation')])
-            } catch (java.text.ParseException e) {
-                redirect(action: "list", params: [dateError: "Veuillez Entrer Une Date Correcte!"])
+            Reservation reserv = new Reservation(code: 1,  dateReservation: new Date()).save(failOnError: true)
+            def liste = panier.livre?.asList()*.titre
+            while(!liste?.isEmpty()) {
+                def livre = Livre.findByTitre(liste.get(0))
+                def nbExemplairesDisponible = livre.getNombreExemplairesDisponibles()
+                Livre.findByTitre(liste.get(0)).setNombreExemplairesDisponibles(nbExemplairesDisponible - 1)
+                reserv.addToLivre(Livre.findByTitre(liste.get(0)))
+                liste.remove(0);
             }
+            panier.livre?.clear()
         } else {
             // Rien faire car il n'ya rien dans le panier
-            redirect(action: "list", params: [idReservation: idReservation, dateReservation: params.get('dateReservation')])
         }
         // Rediriger vers la vue reservation
-
+        redirect(controller: params.get("controleur"), action: "list", params: [offset: params.get("offset") , max: params.get("max")])
     }
 }

@@ -45,20 +45,24 @@ class LivreController {
             //render(view: "list", model: [livreInstanceList: results.subList(0, max), livreInstanceTotal: results.size(), params: params])
             //}
             //else{
-         } else {
+        } else {
             session["actualRequest"] = null
         }
-            redirect(action: "list", params: params)
+        redirect(action: "list", params: params)
         //}
     }
 
     def index(Integer max) {
-            redirect(action: "list", params: params)
+        redirect(action: "list", params: params)
     }
 
     def list(Integer max, Integer offset) {
         if(session["actualRequest"]) {
             def results = session["actualRequest"]
+            println "Test"
+            println results.size()
+            println Livre.count()
+            println "yes :D"
 
             def listeComplete = Livre.list()
             def listeNouvelle = new ArrayList<Livre>()
@@ -68,6 +72,7 @@ class LivreController {
             for(int i = 0; i < listeNomsLivres.size(); i++) {
 
                 if (listeNomsLivresRecherches.contains(listeNomsLivres.get(i))) {
+                    println "Found"
                     listeNouvelle.add(listeComplete.get(i))
                 }
             }
@@ -76,7 +81,7 @@ class LivreController {
             }
             max = ((offset+5) < listeNouvelle.size()) ? offset+5 : listeNouvelle.size()-1
             [livreInstanceList: listeNouvelle.subList(offset, max), livreInstanceTotal: listeNouvelle.size()]
-           // [livreInstanceList: Livre.list(params), livreInstanceTotal: Livre.count()]
+            // [livreInstanceList: Livre.list(params), livreInstanceTotal: Livre.count()]
         } else {
             params.max = Math.min(max ?: 10, 100)
             [livreInstanceList: Livre.list(params), livreInstanceTotal: Livre.count()]
@@ -131,8 +136,8 @@ class LivreController {
         if (version != null) {
             if (livreInstance.version > version) {
                 livreInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-                          [message(code: 'livre.label', default: 'Livre')] as Object[],
-                          "Another user has updated this Livre while you were editing")
+                        [message(code: 'livre.label', default: 'Livre')] as Object[],
+                        "Another user has updated this Livre while you were editing")
                 render(view: "edit", model: [livreInstance: livreInstance])
                 return
             }

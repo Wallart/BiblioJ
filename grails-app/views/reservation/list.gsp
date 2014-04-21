@@ -1,50 +1,117 @@
-
-<%@ page import="biblioj.Reservation" %>
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta name="layout" content="main">
-		<g:set var="entityName" value="${message(code: 'reservation.label', default: 'Reservation')}" />
-		<title><g:message code="default.list.label" args="[entityName]" /></title>
-	</head>
-	<body>
-		<a href="#list-reservation" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-			</ul>
-		</div>
-		<div id="list-reservation" class="content scaffold-list" role="main">
-			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
-			<g:if test="${flash.message}">
-			<div class="message" role="status">${flash.message}</div>
-			</g:if>
-			<table>
-				<thead>
-					<tr>
-					
-						<g:sortableColumn property="code" title="${message(code: 'reservation.code.label', default: 'Code')}" />
-					
-						<g:sortableColumn property="dateReservation" title="${message(code: 'reservation.dateReservation.label', default: 'Date Reservation')}" />
-					
-					</tr>
-				</thead>
-				<tbody>
-				<g:each in="${reservationInstanceList}" status="i" var="reservationInstance">
-					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-					
-						<td><g:link action="show" id="${reservationInstance.id}">${fieldValue(bean: reservationInstance, field: "code")}</g:link></td>
-					
-						<td><g:formatDate date="${reservationInstance.dateReservation}" /></td>
-					
-					</tr>
-				</g:each>
-				</tbody>
-			</table>
-			<div class="pagination">
-				<g:paginate total="${reservationInstanceTotal}" />
-			</div>
-		</div>
-	</body>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>BiblioJ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="${resource(dir: 'css', file: 'main.css')}"/>
+    <link rel="stylesheet" type="text/css" href="${resource(dir: 'css', file: 'content.css')}"/>
+</head>
+<body>
+<div id="body-wrapper">
+    <header>
+        <div id="header-content-wrapper">
+            <div id="title">
+                <g:link controller="reservation" action="list">
+                    Reservation
+                </g:link>
+            </div>
+            <div id="search-wrapper">
+
+            </div>
+        </div>
+        <div id="panier-wrapper">
+            <div id="panier-infos">
+                <div id="panier-img"></div>
+                <div id="panier-text">
+                    <%
+                        def panier = session.getAttribute("panier")
+                        if(panier?.livre && panier.livre.size() > 0){
+                    %>
+                    ${panier.livre.size()}
+                    <%
+                        } else {
+                    %>
+                    0
+                    <%
+                        }
+                    %>
+                    élément(s)
+                </div>
+            </div>
+            <%
+                if(panier?.livre && panier.livre.size() > 0){
+            %>
+            <div id="panier-thumb">
+                <h1>Contenu du panier</h1>
+                <div class="panier-sep"></div>
+                <ul>
+                    <g:each in="${panier.livre}" status="i" var="livreInstance">
+                        <li>
+                            <div class="book-title">${livreInstance.titre}</div>
+                            <div class="book-author">Auteur</div>
+                            <g:form controller="panier" method="post" action="removeFromPanier">
+                                <input type="hidden" name="controleur" value="reservation" />
+                                <input type="hidden" name="nomlivre" value="${fieldValue(bean: livreInstance, field: "titre")}" />
+                                <input type="submit" class="book-cancel" value="" />
+                            </g:form>
+                        </li>
+                    </g:each>
+                </ul>
+                <div id="reserve-wrapper">
+                    <div class="panier-sep"></div>
+                    <g:form controller="reservation" method="post" action="list">
+                        <input type="hidden" name="controleur" value="livre" />
+                        <input type="hidden" name="offset" value="${params.get("offset")}"/>
+                        <input type="hidden" name="max" value="${params.get("max")}"/>
+                        <input type="submit" value="Valider réservation"/>
+                    </g:form>
+                </div>
+            </div>
+            <%
+                }
+            %>
+        </div>
+    </header>
+    <div id="content" style="padding-left: 15px; word-spacing: 1px; letter-spacing: 1px">
+        <g:if test="${!session.getAttribute("panier")?.livre?.isEmpty()}">
+            <g:form controller="reservation" action="addToReservation">
+                <table>
+                    <tr>
+                        <td>
+                            <p class="textReserv" >  Date de reservation : </p>
+                        </td>
+                        <td>
+                            <input class="textReserv" type="date" name="dateDeReservation"/>
+                        </td>
+                        <td>
+                            <input type="submit" value="Valider Définitivement" class="valReserv">
+                        </td>
+                    </tr>
+                    <tr>
+                    <g:if test="${params.get("dateError")}">
+                        <p class="erreurReserv">  ${params.get("dateError")} </p>
+                    </g:if>
+                    <tr>
+                        <p> </p>
+                    </tr>
+                </table>
+            </g:form>
+        </g:if>
+        <g:elseif test="${(params.get("idReservation")) && (params.get("idReservation")?.toString() != "") }">
+            <p class="textReserv" >  Reservation Numero: <i>'${params.get("idReservation")}' Effectuée avec succès </i><br>
+            </p>
+            <p class="textReserv" >  Limite de récupération: <i>'${params.get("dateReservation")}'</i> + 24h
+            </p>
+        </g:elseif>
+        <g:else>
+            <p class="textReserv" >  <i>Panier Vide Impossible de reserver, veuillez ajouter au moins un element</i></p>
+        </g:else>
+        <g:form controller="livre" action="list" >
+            <input type="submit" value="BiblioJ" class="valReserv">
+        </g:form>
+    </div>
+    <footer></footer>
+</div>
+</body>
 </html>

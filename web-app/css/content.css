@@ -111,3 +111,37 @@
 #book-pagination a:hover {
     font-weight:bold;
 }
+
+.valReserv {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border:0px;
+    border-radius:1.5px;
+    height: 27px;
+    outline: none;
+    margin: 0;
+    padding:0px 5px 0px 5px;
+}
+
+.valReserv {
+    font-weight:bold;
+    color:white;
+    background-color:#8cc334;
+}
+
+.valReserv:hover {
+    border: 1px solid #5a850e;
+}
+
+.textReserv {
+    font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvetica', 'Arial', 'Lucida Grande', 'sans-serif';
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.erreurReserv {
+    font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvetica', 'Arial', 'Lucida Grande', 'sans-serif';
+    color: #cc0000;
+    font-weight: bold;
+}

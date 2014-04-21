@@ -145,6 +145,11 @@ class PanierController {
         // on retire le livre du panier
         panier.removeFromLivre(livre)
         println (session.getId() + " : " + panier.livre)
-        redirect(controller: params.get("controleur"), action: "list", params: [offset: params.get("offset") , max: params.get("max")])
+        //Si il n'ya plus de livres on redirige vers la liste principale
+        if (panier.livre.isEmpty()) {
+            redirect(controller: "livre", action: "list", params: [offset: params.get("offset") , max: params.get("max")])
+        } else {
+            redirect(controller: params.get("controleur"), action: "list", params: [offset: params.get("offset"), max: params.get("max")])
+        }
     }
 }

@@ -40,7 +40,7 @@
                         </g:form>
                     </div>
                     <div id="panier-wrapper">
-                        <g:form controller="reservation" method="post" action="addToReservation">
+                        <g:form controller="reservation" method="post" action="list">
                             <input type="hidden" name="controleur" value="livre" />
                             <input type="hidden" name="offset" value="${params.get("offset")}"/>
                             <input type="hidden" name="max" value="${params.get("max")}"/>

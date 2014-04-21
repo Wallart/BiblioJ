@@ -59,10 +59,6 @@ class LivreController {
     def list(Integer max, Integer offset) {
         if(session["actualRequest"]) {
             def results = session["actualRequest"]
-            println "Test"
-            println results.size()
-            println Livre.count()
-            println "yes :D"
 
             def listeComplete = Livre.list()
             def listeNouvelle = new ArrayList<Livre>()
@@ -72,7 +68,6 @@ class LivreController {
             for(int i = 0; i < listeNomsLivres.size(); i++) {
 
                 if (listeNomsLivresRecherches.contains(listeNomsLivres.get(i))) {
-                    println "Found"
                     listeNouvelle.add(listeComplete.get(i))
                 }
             }

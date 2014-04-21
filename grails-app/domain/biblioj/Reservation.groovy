@@ -2,7 +2,7 @@ package biblioj
 
 class Reservation {
 
-    Number code
+    String code
     Date dateReservation
 
     static hasMany = [livre:Livre]

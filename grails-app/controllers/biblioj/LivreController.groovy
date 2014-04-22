@@ -10,51 +10,84 @@ class LivreController {
 
     def search() {
         def query = params.query
-        params.titleChecked = (params.filterTitle == 'on') ? true : false
-        params.authorChecked = (params.filterAuthor == 'on') ? true : false
-        params.doctypeChecked = (params.filterDoctype == 'on') ? true : false
-
-        if(query){
+        params.titleChecked = (params.filterTitle == 'on') ? "true" : "false"
+        params.authorChecked = (params.filterAuthor == 'on') ? "true" : "false"
+        params.doctypeChecked = (params.filterDoctype == 'on') ? "true" : "false"
+        println "${params.titleChecked} , ${params.authorChecked}, ${params.doctypeChecked}"
+        if(query) {
 
             def criteria = Livre.createCriteria()
             def results = criteria {
                 or {
-                    if(params.titleChecked){
-                        ilike("titre", "%"+query+"%")
+                    if (params.titleChecked.equals("true")) {
+                        ilike("titre", "%" + query + "%")
                     }
 
-                    if(params.authorChecked){
+                    if (params.authorChecked.equals("true")) {
                         auteurs {
                             or {
                                 ilike("nom", "%" + query + "%")
-                                ilike("prenom", "%"+query+"%")
+                                ilike("prenom", "%" + query + "%")
                             }
                         }
                     }
 
-                    if(params.doctypeChecked){
+                    if (params.doctypeChecked.equals("true")) {
                         type {
-                            ilike("intitule", "%"+query+"%")
+                            ilike("intitule", "%" + query + "%")
                         }
                     }
                 }
             }
-
-            def max = Math.min(results.size(), 5)
-            render(view: "list", model: [livreInstanceList: results.subList(0, max), livreInstanceTotal: results.size(), params: params])
+            if (!results) {
+                println "renew"
+                results = new ArrayList();
+            }
+            //def max = Math.min(results.size(), 5)
+            session["actualRequest"] = results
+            session["titleChecked"] = params.titleChecked
+            session["authorChecked"] = params.authorChecked
+            session["doctypeChecked"] = params.doctypeChecked
+            session["query"] = params.query
+        } else {
+            session["actualRequest"] = null
         }
-        else{
-            redirect(action: "list", params: params)
-        }
+        redirect(action: "list", params: params)
     }
 
     def index(Integer max) {
         redirect(action: "list", params: params)
     }
 
-    def list(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        [livreInstanceList: Livre.list(params), livreInstanceTotal: Livre.count()]
+    def list(Integer max, Integer offset) {
+        if((session["actualRequest"]) || (session["actualRequest"]?.isEmpty())) {
+            if (session["actualRequest"]?.isEmpty()) {
+                [livreInstance: new ArrayList<Livre>(), livreInstanceTotal: 0]
+            } else {
+                def results = session["actualRequest"]
+
+                def listeComplete = Livre.list()
+                def listeNouvelle = new ArrayList<Livre>()
+                def listeNomsLivresRecherches = results*.titre
+                def listeNomsLivres = listeComplete*.titre
+
+                for (int i = 0; i < listeNomsLivres.size(); i++) {
+
+                    if (listeNomsLivresRecherches.contains(listeNomsLivres.get(i))) {
+                        listeNouvelle.add(listeComplete.get(i))
+                    }
+                }
+                if (!offset) {
+                    offset = 0
+                }
+                max = ((offset + 5) < listeNouvelle.size()) ? offset + 5 : listeNouvelle.size() - 1
+                [livreInstanceList: listeNouvelle.subList(offset, max), livreInstanceTotal: listeNouvelle.size()]
+            }
+
+        } else {
+            params.max = Math.min(max ?: 10, 100)
+            [livreInstanceList: Livre.list(params), livreInstanceTotal: Livre.count()]
+        }
     }
 
     def create() {
@@ -105,8 +138,8 @@ class LivreController {
         if (version != null) {
             if (livreInstance.version > version) {
                 livreInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-                          [message(code: 'livre.label', default: 'Livre')] as Object[],
-                          "Another user has updated this Livre while you were editing")
+                        [message(code: 'livre.label', default: 'Livre')] as Object[],
+                        "Another user has updated this Livre while you were editing")
                 render(view: "edit", model: [livreInstance: livreInstance])
                 return
             }

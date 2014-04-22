@@ -189,3 +189,8 @@
 #dateReserv-wrapper {
     margin-bottom:10px
 }
+
+.textReserv {
+    float: left;
+    font: Helvetica
+}

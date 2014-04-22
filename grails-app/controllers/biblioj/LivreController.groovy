@@ -49,14 +49,10 @@ class LivreController {
             session["authorChecked"] = params.authorChecked
             session["doctypeChecked"] = params.doctypeChecked
             session["query"] = params.query
-            //render(view: "list", model: [livreInstanceList: results.subList(0, max), livreInstanceTotal: results.size(), params: params])
-            //}
-            //else{
         } else {
             session["actualRequest"] = null
         }
         redirect(action: "list", params: params)
-        //}
     }
 
     def index(Integer max) {
@@ -64,7 +60,6 @@ class LivreController {
     }
 
     def list(Integer max, Integer offset) {
-        println "liste ${session.getAttribute("actualRequest")}"
         if((session["actualRequest"]) || (session["actualRequest"]?.isEmpty())) {
             if (session["actualRequest"]?.isEmpty()) {
                 [livreInstance: new ArrayList<Livre>(), livreInstanceTotal: 0]
@@ -89,9 +84,7 @@ class LivreController {
                 [livreInstanceList: listeNouvelle.subList(offset, max), livreInstanceTotal: listeNouvelle.size()]
             }
 
-            // [livreInstanceList: Livre.list(params), livreInstanceTotal: Livre.count()]
         } else {
-            println "HEHE"
             params.max = Math.min(max ?: 10, 100)
             [livreInstanceList: Livre.list(params), livreInstanceTotal: Livre.count()]
         }

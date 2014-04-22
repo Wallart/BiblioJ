@@ -9,4 +9,10 @@ class Reservation {
 
     static constraints = {
     }
+
+    static transactional = true
+
+    static mapping = {
+        livre fetch: "join"
+    }
 }

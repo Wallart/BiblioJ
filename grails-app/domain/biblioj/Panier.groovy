@@ -8,4 +8,8 @@ class Panier {
     static constraints = {
 
     }
+
+    static mapping = {
+        livre fetch: "join"
+    }
 }

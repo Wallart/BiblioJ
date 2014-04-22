@@ -12,29 +12,29 @@ class BootStrap {
              * On vérifie que le Type de Document n'existe pas déjà.
              * On vérifie aussi que son intitulé n'est pas vide.
              */
-           /*def doc = TypeDocument.findByIntitule(tokens[1])
+           def doc = TypeDocument.findByIntitule(tokens[1])
             if(doc == null && tokens[1].size() > 0){
                 doc = new TypeDocument(intitule: tokens[1]).save(failOnError: true)
-            }*/
+            }
 
             /*
              * On vérifie que le Livre n'existe pas déjà.
              */
-            /*def book = Livre.findByTitre(tokens[3])
+            def book = Livre.findByTitre(tokens[3])
             if(book == null){
                 def exemplaires = (int) (Math.random()*1000)
                 def dispo = (int) (Math.random()*exemplaires)
                 book = new Livre(titre:tokens[3], nombreExemplaires: exemplaires, nombreExemplairesDisponibles: dispo, type:doc).save(failOnError: true)
-            }*/
+            }
 
             /*
              * On vérifie que l'Auteur n'existe pas déjà.
              */
-            /*def author = Auteur.findByNomAndPrenom(nom, prenom)
+            def author = Auteur.findByNomAndPrenom(nom, prenom)
             if(author == null){
                 author = new Auteur(nom: nom, prenom: prenom).save(failOnError: true)
-            }*/
-            //author.addToLivres(book)
+            }
+            author.addToLivres(book)
         }
     }
     def destroy = {

@@ -6,4 +6,6 @@ class TypeDocument {
 
     static constraints = {
     }
+
+    static transactional = true
 }

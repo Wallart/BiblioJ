@@ -7,6 +7,8 @@ import sun.security.provider.SHA
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import groovy.time.TimeCategory
+
 
 class ReservationController {
 
@@ -171,10 +173,10 @@ class ReservationController {
                         }
                     }
                     panier.livre?.clear()
-                    DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-                    String reportDate = df.format(date);
-                    reportDate.replace("/", " / ");
-                    redirect(action: "list", params: [idReservation: idReservation, dateReservation: reportDate])
+                    DateFormat df = new SimpleDateFormat("dd/MM/yyyy")
+                    String reportDate = df.format(date.next())
+                    String dateReservation = df.format(date)
+                    redirect(action: "list", params: [idReservation: idReservation, dateLimiteReservation: reportDate, dateReservation: dateReservation])
                 }
             } catch (java.text.ParseException e) {
                 redirect(action: "list", params: [dateError: "Veuillez Entrer Une Date Valide, supérieure au : '${new Date().toGMTString()}'"])
@@ -183,7 +185,7 @@ class ReservationController {
         } else {
             println 4
             // Rien faire car il n'ya rien dans le panier
-            redirect(action: "list", params: [idReservation: idReservation, dateReservation: date?.toString()])
+            redirect(action: "list", params: [idReservation: idReservation, dateReservation: null])
         }
         // Rediriger vers la vue reservation
     }

@@ -83,7 +83,11 @@
                                     <g:each in="${panier.livre}" status="i" var="livreInstance">
                                         <li>
                                             <div class="book-title">${livreInstance.titre}</div>
-                                            <div class="book-author">Auteur</div>
+                                            <div class="book-author">
+                                                <g:each in="${livreInstance.auteurs}" status="j" var="auteurInstance">
+                                                    <span>${auteurInstance.invokeMethod("toString", null)}</span>
+                                                </g:each>
+                                            </div>
                                             <g:form controller="panier" method="post" action="removeFromPanier">
                                                 <input type="hidden" name="controleur" value="livre" />
                                                 <input type="hidden" name="nomlivre" value="${fieldValue(bean: livreInstance, field: "titre")}" />

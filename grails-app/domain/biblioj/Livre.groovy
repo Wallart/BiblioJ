@@ -11,6 +11,15 @@ class Livre {
     static belongsTo = [Auteur, Reservation]
     static searchable = true
 
+
+    static mapping = {
+        auteurs fetch: "join"
+        reservations fetch: "join"
+        type fetch: "join"
+    }
+
+    static transactional = true
+
     static constraints = {
         type nullable: true
     }

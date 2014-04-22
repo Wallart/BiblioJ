@@ -12,6 +12,12 @@ class Auteur {
         prenom nullable: true
     }
 
+    static mapping = {
+        livres fetch: "join"
+    }
+
+    static transactional = true
+
     String toString() {
         return prenom+" "+nom
     }

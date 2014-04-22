@@ -120,13 +120,13 @@
                     <div id="left-foot">
                         <span>BiblioJ a été développé par <a href="mailto:julien.wallart@phelsuma.fr">Julien Wallart</a> et <a href="mailto:koumad.salim@gmail.com">Salim Koumad</a> dans le cadre d'un projet universitaire
                         et n'est en aucun cas approuvé, commandité ou affilié à la Bibliothèque Nationale de France.</span>
-                        <a href="http://www.univ-tlse3.fr/" target="_blank"><img src="images/tlse3_logo.jpg" alt="paul sabatier"/></a>
+                        <a href="http://www.univ-tlse3.fr/" target="_blank"><img src="${resource(dir: 'images', file: 'tlse3_logo.jpg')}" alt="paul sabatier"/></a>
                     </div>
                     <div id="right-foot">
                         <p>Powered by</p>
                         <div>
-                            <a href="http://groovy.codehaus.org/" target="_blank"><span id="groovy_logo"></span></a>
-                            <a href="http://grails.org/" target="_blank"><span id="grails_logo"></span></a>
+                            <a href="http://groovy.codehaus.org/" target="_blank"><img id="groovy_logo" src="${resource(dir: 'images', file: 'groovy.png')}" width="45%" /></a>
+                            <a href="http://grails.org/" target="_blank"><img id="grails_logo" src="${resource(dir: 'images', file: 'grails.png')}" width="45%" /></a>
                         </div>
                     </div>
                 </div>

@@ -7,6 +7,13 @@
     padding:20px 0px 40px 0px;
 }
 
+#content .title {
+    text-indent:20px;
+    font:1.5em "Open Sans", Helvetica, Arial, sans-serif;
+    color:#6a6a6a;
+    margin-bottom:25px;
+}
+
 #content ul {
     list-style-type:none;
     padding:0;
@@ -112,48 +119,73 @@
     font-weight:bold;
 }
 
-.valReserv {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    border:0px;
-    border-radius:1.5px;
-    height: 27px;
-    outline: none;
-    margin: 0;
-    padding:0px 5px 0px 5px;
+#reservation-view {
+    width:90%;
+    margin:auto;
+    text-align:center;
 }
 
-.valReserv {
-    font-weight:bold;
-    color:white;
-    background-color:#8cc334;
-}
-
-.valReserv:hover {
-    border: 1px solid #5a850e;
-}
-
-.textReserv {
-    font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvetica', 'Arial', 'Lucida Grande', 'sans-serif';
-    font-weight: bold;
-    margin-bottom: 10px;
-    margin-top: 10px;
-}
-
-.erreurReserv {
-    font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvetica', 'Arial', 'Lucida Grande', 'sans-serif';
-    color: #cc0000;
-    font-weight: bold;
-}
-
-#content_reservation {
-    border-radius:4px;
+#reservation-view ul {
+    width:300px;
+    max-height:300px;
     margin:20px auto;
-    width:60%;
-    background-color:whitesmoke;
-    box-shadow: -1px 2px 10px 3px rgba(0, 0, 0, 0.3);
-    padding:20px 0px 40px 0px;
-    padding-left: 15px;
-    word-spacing: 1px;
-    letter-spacing: 1px
+    overflow-y:auto;
+    background-color:white;
+    border:1px solid #a3a3a3;
+}
+
+#reservation-view ul li {
+    width:100%;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    text-align:left;
+    display:block;
+    height:50px;
+    margin:auto;
+    margin-bottom:10px;
+    font-family:Arial;
+}
+
+#reservation-view ul li:hover {
+    background-color:#4a6694;
+}
+
+#reservation-view #home-link {
+    margin-top:30px;
+}
+
+#reservation-view #home-link a {
+    text-decoration:none;
+    color:black;
+    font-family:Helvetica;
+    font-size:1em;
+}
+
+.errorReserv {
+    color:red;
+    margin-bottom:30px;
+}
+#dateReserv-form {
+}
+
+#dateReserv-form label {
+    margin-right:10px;
+}
+
+#dateReserv-form input[type="submit"] {
+    margin-bottom:5px;
+    width:70px;
+}
+
+#dateReserv-form #cancel-reserve {
+    background-color:#e3353e;
+}
+
+#dateReserv-form #cancel-reserve:hover {
+    border:1px solid red;
+}
+
+#dateReserv-wrapper {
+    margin-bottom:10px
 }

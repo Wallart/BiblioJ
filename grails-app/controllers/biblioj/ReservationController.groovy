@@ -136,7 +136,7 @@ class ReservationController {
                     if (LivrePlusDisponibles.size() == liste.size()) {
                         println 1
                         panier.livre?.clear()
-                        def messageErreur = "Plus aucun livre disponible! reservation impossible"
+                        def messageErreur = "Plus aucun livre disponible ! Réservation impossible."
                         redirect(action: "list", params: [dateError: messageErreur, vide: "true"])
                     } else {
                         println 2
@@ -155,7 +155,7 @@ class ReservationController {
                             }
                             // on retire le livre du panier
                             panier.removeFromLivre(livre)
-                            messageErreur.append("Le livre ${LivrePlusDisponibles.get(i)} a été retiré, il n'est plus disponible. <br>")
+                            messageErreur.append("Le livre ${LivrePlusDisponibles.get(i)} a été retiré, car il n'est plus disponible. <br>")
                         }
                         redirect(action: "list", params: [dateError: messageErreur.toString()])
                     }
@@ -186,6 +186,6 @@ class ReservationController {
             redirect(action: "list", params: [idReservation: idReservation, dateReservation: date?.toString()])
         }
         // Rediriger vers la vue reservation
-
     }
+
 }
